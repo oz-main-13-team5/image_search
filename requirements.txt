@@ -1,0 +1,8 @@
+Django==4.2
+psycopg2-binary==2.9.11       # PostgreSQL 드라이버
+torch==2.9.0                  # PyTorch 최신 버전 (Python 3.13 지원)
+torchvision==0.24.0           # 최신 torchvision (Python 3.13 지원)
+Pillow==10.4.0                # 이미지 처리
+requests==2.31.0              # URL에서 이미지 다운로드
+numpy==2.3.3
+ultralytics==8.3.227
