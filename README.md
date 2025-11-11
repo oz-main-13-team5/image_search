@@ -1,9 +1,13 @@
-1. 개요
+# 1. 개요
+
+
 이 서비스는 DB에 저장된 이미지 URL을 주기적으로 확인하고, YOLO 모델을 사용해 분석한 결과를 다시 DB에 기록합니다.
 Django 커스텀 커맨드(run_scheduler)와 systemd를 이용해 서버에서 자동으로 실행되도록 구성했습니다.
 
-2. 주요 구성 요소
-(1) Model: ImageRecord
+# 2. 주요 구성 요소
+
+
+#### (1) Model: ImageRecord
 DB 테이블은 이미지 분석 작업을 관리합니다.
 
 | 필드명        | 타입              | 설명 |
@@ -18,7 +22,8 @@ DB 테이블은 이미지 분석 작업을 관리합니다.
 | failed_at     | DateTimeField     | 실패 확정 시각 |
 
 
-(2) Task Scheduler: tasks.py
+#### (2) Task Scheduler: tasks.py
+
 run_once()
 
 DB에서 processed=False이고 retry_count<3인 레코드를 조회
@@ -35,17 +40,19 @@ run_scheduler(interval_seconds=60)
 
 SIGTERM/SIGINT 신호를 받아 안전하게 종료
 
-(3) Django Command: run_scheduler.py
+#### (3) Django Command: run_scheduler.py
+
 python manage.py run_scheduler --interval 60
 
 내부적으로 tasks.run_scheduler() 호출
 
 systemd 서비스에서 이 커맨드를 실행하도록 설정
 
-3. systemd 설정 방법
-서비스 유닛 파일 작성 /etc/systemd/system/yolo-scheduler.service
+# 3. systemd 설정 방법
 
-ini
+#### 서비스 유닛 파일 작성 /etc/systemd/system/yolo-scheduler.service
+
+```ini
 [Unit]
 Description=YOLO Image Analysis Scheduler
 After=network.target
@@ -60,9 +67,11 @@ Environment="DJANGO_SETTINGS_MODULE=image_search_server.settings"
 
 [Install]
 WantedBy=multi-user.target
-systemd 리로드 및 서비스 시작
+```
 
-bash
+#### systemd 리로드 및 서비스 시작
+
+```bash
 sudo systemctl daemon-reload
 sudo systemctl enable yolo-scheduler
 sudo systemctl start yolo-scheduler
@@ -70,12 +79,15 @@ sudo systemctl start yolo-scheduler
 
 bash
 sudo systemctl status yolo-scheduler
-로그 확인
+```
+#### 로그 확인
 
-bash
+```bash
 journalctl -u yolo-scheduler -f
+```
 
-4. 운영 시 주의사항
+# 4. 운영 시 주의사항
+
 로그 확인: systemd 로그(journalctl)에서 에러 메시지를 확인 가능.
 
 재시도 정책: 최대 3회까지 자동 재시도 후 실패 처리.
