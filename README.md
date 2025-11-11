@@ -6,15 +6,17 @@ Django 커스텀 커맨드(run_scheduler)와 systemd를 이용해 서버에서 �
 (1) Model: ImageRecord
 DB 테이블은 이미지 분석 작업을 관리합니다.
 
-필드명	타입	설명
-image_url	CharField(1000)	분석할 이미지 URL
-result_class	CharField(255)	대표 라벨 (confidence 가장 높은 클래스)
-result_json	JSONField	전체 추론 결과 (라벨+confidence+메타정보)
-error_message	TextField	실패 시 에러 메시지
-retry_count	IntegerField	실패 횟수 (최대 3회)
-created_at	DateTimeField	레코드 생성 시각
-processed	BooleanField	처리 완료 여부
-failed_at	DateTimeField	실패 확정 시각
+| 필드명        | 타입              | 설명 |
+|---------------|-------------------|------|
+| image_url     | CharField(1000)   | 분석할 이미지 URL |
+| result_class  | CharField(255)    | 대표 라벨 |
+| result_json   | JSONField         | 전체 결과 저장 |
+| error_message | TextField         | 실패 시 에러 메시지 |
+| retry_count   | IntegerField      | 실패 횟수 기록 |
+| created_at    | DateTimeField     | 레코드 생성 시각 |
+| processed     | BooleanField      | 처리 완료 여부 |
+| failed_at     | DateTimeField     | 실패 확정 시각 |
+
 
 (2) Task Scheduler: tasks.py
 run_once()
