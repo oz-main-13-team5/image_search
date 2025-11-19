@@ -1,14 +1,8 @@
 Django==4.2
 psycopg2-binary==2.9.11
+torch==2.9.0
+torchvision==0.24.0
 Pillow==10.4.0
 requests==2.31.0
 numpy==2.3.3
-
-# Torch CPU-only 버전
-torch==2.2.2+cpu
-torchvision==0.17.2+cpu
-torchaudio==2.2.2+cpu
---extra-index-url https://download.pytorch.org/whl/cpu
-
-# YOLO (ultralytics)
 ultralytics==8.3.227
