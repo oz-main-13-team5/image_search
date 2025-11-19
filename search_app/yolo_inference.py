@@ -11,7 +11,7 @@ _session.headers.update({"User-Agent": "Mozilla/5.0"})
 
 # 모델 초기화 (settings에서 경로 읽기)
 MODEL_PATH = settings.YOLO_MODEL_PATH
-model = YOLO(MODEL_PATH)
+model = YOLO(MODEL_PATH).to("cpu")
 
 # 0.25 이하는 불확실 정보 취급
 CONF_THRESH = getattr(settings, "YOLO_CONF_THRESH", 0.25)
@@ -40,7 +40,7 @@ def analyze_image(url: str):
 
     # 추론 타이밍
     start = time.time()
-    results = model(img)
+    results = model(img, device="cpu")
     elapsed_ms = (time.time() - start) * 1000.0
 
     detections = []
